@@ -1,0 +1,33 @@
+# Ignore build directories
+build/
+cmake-build-debug/
+cmake-build-release/
+
+# Ignore temporary files and logs
+*.o
+*.obj
+*.log
+*.tmp
+*.swp
+*.swo
+*.d
+*.out
+
+# Ignore compiled binaries and libraries
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Ignore CMake files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Ignore generated files
+*.tar.gz
+*.zip
+*.7z

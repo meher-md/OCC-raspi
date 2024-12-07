@@ -1,0 +1,107 @@
+1. Write the Test Code
+
+Create a file named test_occ.cpp and add the following code:
+
+#include <gp_Pnt.hxx>
+#include <iostream>
+
+int main() {
+    // Create a 3D point using OCC
+    gp_Pnt point(10.0, 20.0, 30.0);
+
+    // Print the coordinates of the point
+    std::cout << "Point coordinates: (" 
+              << point.X() << ", " 
+              << point.Y() << ", " 
+              << point.Z() << ")" << std::endl;
+
+    return 0;
+}
+
+This code creates a 3D point using the OCC library and prints its coordinates.
+
+
+---
+
+2. Compile the Code
+
+Use g++ to compile the code. Make sure the OCC libraries and headers are correctly linked:
+
+g++ test_occ.cpp -o test_occ -I/usr/local/include/opencascade -L/usr/local/lib -lTKMath -lTKernel
+
+Explanation of Flags:
+
+-I/usr/local/include/opencascade: Path to OCC header files.
+
+-L/usr/local/lib: Path to OCC libraries.
+
+-lTKMath -lTKernel: Link the required OCC libraries.
+
+
+
+---
+
+3. Run the Test Program
+
+Run the compiled binary:
+
+./test_occ
+
+You should see the output:
+
+Point coordinates: (10, 20, 30)
+
+
+---
+
+4. Debugging Common Issues
+
+Library Not Found Error: If you see an error like cannot find -lTKernel, update the library cache:
+
+sudo ldconfig
+
+Include Path Error: If the compiler cannot find header files, ensure they are in /usr/local/include/opencascade. Otherwise, adjust the -I flag to the correct path.
+
+
+
+---
+
+5. Automate with CMake (Optional)
+
+You can also use a CMakeLists.txt file to simplify the build process:
+
+Create CMakeLists.txt:
+
+cmake_minimum_required(VERSION 3.10)
+project(OCC_Test)
+
+# Find Open CASCADE
+find_package(OpenCASCADE REQUIRED)
+
+# Add the executable
+add_executable(test_occ test_occ.cpp)
+
+# Link Open CASCADE libraries
+target_include_directories(test_occ PRIVATE ${OpenCASCADE_INCLUDE_DIR})
+target_link_libraries(test_occ PRIVATE ${OpenCASCADE_LIBRARIES})
+
+Build the Program:
+
+1. Create a build directory:
+
+mkdir build
+cd build
+
+
+2. Configure and build:
+
+cmake ..
+make
+
+
+3. Run the test:
+
+./test_occ
+
+
+
