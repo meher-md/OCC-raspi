@@ -2,7 +2,6 @@
 
 This guide provides step-by-step instructions to clone, build, and install the Open CASCADE Technology (OCCT) repository on a Raspberry Pi running Raspbian OS.
 
----
 
 ## Prerequisites
 
@@ -21,7 +20,7 @@ Install the essential build tools and libraries required by Open CASCADE:
 sudo apt install build-essential cmake git libx11-dev libfreetype6-dev libgl1-mesa-dev libxext-dev libxrender-dev libtbb-dev tcl-dev tk-dev doxygen -y
 ```
 
----
+
 
 ## Cloning the Repository
 
@@ -40,7 +39,6 @@ To avoid network-related issues or large history downloads, follow these steps:
    cd OCCT
    ```
 
----
 
 ## Building Open CASCADE
 
@@ -72,7 +70,7 @@ make -j$(nproc)
 ```
 - The `-j$(nproc)` flag uses all available CPU cores to speed up the build process.
 
----
+
 
 ## Installing Open CASCADE
 
@@ -82,7 +80,6 @@ After the build completes successfully, install Open CASCADE:
 sudo make install
 ```
 
----
 
 ## Verifying the Installation
 
@@ -95,7 +92,7 @@ sudo make install
 2. **Test the installation**:
    Run example programs (if available) or your custom scripts to validate the installation.
 
----
+
 
 ## Optional Notes
 
@@ -112,7 +109,7 @@ sudo make install
   git clone --depth 1 https://github.com/Open-Cascade-SAS/OCCT.git
   ```
 
----
+
 
 ## Uninstallation
 
@@ -123,8 +120,76 @@ sudo rm -rf /usr/local/lib/libTK*
 sudo rm -rf /usr/local/include/OpenCASCADE
 ```
 
----
+
 
 ## Acknowledgments
 
 This guide is based on the official Open CASCADE repository and adapted for installation on Raspberry Pi.
+
+
+# Saving and Reusing Open CASCADE C Library
+
+If you want to save the built Open CASCADE C library for future use, follow these steps. This method allows you to avoid rebuilding the library every time and quickly install it when needed.
+
+
+
+## Saving the Built Library
+
+1. **Locate the Installed Files**:
+   After building and installing Open CASCADE, the libraries and headers are typically located under:
+   - `/usr/local/lib` for libraries.
+   - `/usr/local/include` for headers.
+
+2. **Compress the Installation**:
+   Save the libraries and headers as a compressed archive:
+   ```bash
+   tar -czvf occt-library.tar.gz /usr/local/lib/libTK* /usr/local/include/OpenCASCADE
+   ```
+   - This creates a file `occt-library.tar.gz` containing:
+     - All `libTK*` libraries (e.g., `libTKG2d`, `libTKMath`).
+     - The `OpenCASCADE` headers.
+
+3. **Store the Archive**:
+   - Save the `occt-library.tar.gz` file in a secure location, such as a USB drive, cloud storage, or a Git repository.
+
+
+
+## Reusing or Installing the Library Later
+
+1. **Extract the Saved Archive**:
+   When needed, extract the archive to the appropriate location:
+   ```bash
+   sudo tar -xzvf occt-library.tar.gz -C /
+   ```
+   - This restores the libraries to `/usr/local/lib` and headers to `/usr/local/include/OpenCASCADE`.
+
+2. **Update the Library Cache**:
+   After extracting, update the library cache to ensure the system recognizes the new libraries:
+   ```bash
+   sudo ldconfig
+   ```
+
+3. **Verify the Installation**:
+   Check if the libraries are available:
+   ```bash
+   ls /usr/local/lib | grep TK
+   ```
+   - This should list all Open CASCADE libraries.
+
+
+
+## Advantages of This Method
+
+- **Time-Saving**: Avoids recompilation, especially for large projects.
+- **Portability**: You can transfer the library to other devices with the same architecture (e.g., other Raspberry Pi devices).
+- **Ease of Use**: Reinstallation is as simple as extracting the archive.
+
+
+
+## Additional Notes
+
+- If you plan to use the saved library on a different system, ensure the target system has compatible dependencies, such as:
+  - `libx11-dev`
+  - `libfreetype6-dev`
+  - `libgl1-mesa-dev`, etc.
+- Test the library after extraction by compiling a small example to ensure compatibility.
